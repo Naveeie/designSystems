@@ -1,0 +1,12 @@
+
+  {
+    "intentTemplateId": "34123461704077243001700717394288",
+    "intentId": "summary-intent-1",
+    "template": "<p>Test rules&nbsp;<br><br>Test_String @<span entity-id=\"entity1\" class=\"uniphore-entity-name\" contenteditable=\"false\">Test_String</span></p><p color='black' >mobile : <span variable-id='variable1' class='uniphore-variable-name'>mobile</span></p>",
+    "experienceId": "52b81e03-69a1-4d43-8759-726b6ac55f19",
+    "businessProcessId": "7341466421122183431708590568104",
+    "tenantId": "3e37631c-78ac-4137-8415-72dcd90b19fd",
+    "environment": "dev",
+    "parsedTemplate": "Debit date:@00000Date Credit date:@00000Dateupdated"
+  }
+

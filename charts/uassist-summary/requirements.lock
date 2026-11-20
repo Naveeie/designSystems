@@ -1,0 +1,6 @@
+dependencies:
+- name: uniphore-base-chart
+  repository: oci://registry.uniphore.com/uniphore-charts
+  version: 1.0.20-v46ed179e
+digest: sha256:2f97e14cc0372c66778c8430c6ca58d03cbbb3c84302f232f18343d3c7ee8ab4
+generated: "2025-05-16T15:42:29.2365626+05:30"

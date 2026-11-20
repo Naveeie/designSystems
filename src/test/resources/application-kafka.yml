@@ -1,0 +1,19 @@
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+      properties:
+        max.request.size: ${KAFKA_MAX_MESSAGE_SIZE:2097}
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      properties:
+        max.partition.fetch.bytes: ${KAFKA_MAX_MESSAGE_SIZE:2097}
+        consumer.concurrency: ${KAFKA_CONSUMER_CONCURRENCY:1}
+    properties:
+      ssl:
+        endpoint:
+          identification:
+            algorithm: null

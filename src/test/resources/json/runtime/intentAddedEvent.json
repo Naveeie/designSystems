@@ -1,0 +1,10 @@
+{
+	"tenantId": "ad974218-c15f-4a31-ae70-596aa4082fd1",
+	"environment": "dev",
+	"conversationId": "cfr3sh3hjl1dk9u130hk",
+	"businessProcessId": "EnsembleBP01",
+	"intentLabel": "reason",
+	"text": "update home address",
+	"participantId": "agent1",
+	"detectedBy": "AI"
+}

@@ -1,0 +1,21 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: uassist-summary
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: uassist-summary
+  minReplicas: {{ .Values.customHPA.hpa.minReplica }}
+  maxReplicas: {{ .Values.customHPA.hpa.maxReplica }}
+
+  metrics:
+    - type: External
+      external:
+        metric:
+          # Convention to mention the defined Datadog Metric CRD is "datadogmetric@<Namespace>:<Name>"
+          name: "datadogmetric@{{ $.Release.Namespace }}:dd-metric-kafka-lag-based-uassist-summary"
+        target:
+          type: Value
+          value: {{ .Values.customHPA.hpa.scaleUpTargetValue }}

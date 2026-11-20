@@ -1,0 +1,91 @@
+{
+	"conversationId": "cfr3sh3hjl1dk9u130hl",
+	"tenantId": "3e37631c-78ac-4137-8415-72dcd90b19fd",
+	"environment": "dev",
+	"businessProcessId": "7341466421122183431708590568104",
+	"experienceId": "9e9d1fcc-f99d-400c-bfb8-95d79a6ba9e5",
+	"timestamp": {
+		"seconds": "1680202333",
+		"nanos": "686768203"
+	},
+	"language": "en-us",
+	"headerSummary": {
+		"template": "<h1 color='red' style='bold'>Address Details</h1><p color='black'>customer name : <span entity-id='entity11 2' class='uniphore-entity-name'>customer name</span></p><p color='black' >mobile : <span variable-id='variable value 11 2' class='uniphore-variable-name'>mobile</span></p>",
+		"timestamp": {
+			"seconds": "1680202333",
+			"nanos": "686768203"
+		},
+		"plainText": "Test rules  Test_String @@Test_String Rule string@Rule Test_String Rule order@Order_Rule Rule Order 2@Order_Rule_2 Rule Order 3@Order_Rule_3 Rule Order 4@Order_Rule_4 Rule Order 5@Order_Rule_5 Rule 3 Copy@Order_Rule_3 copy PO Rule@Purchase Options Rule Customer Wireless Number@Customer Wireless Number Rule CWN @Rule_Customer Wireless number Help Entity@help you today Help Var@Help_Var Order Processed Entity@order has been processed Order Processed Var@order has been processed Date@Date",
+		"entityInstanceIdMap":{
+			"entity": "entity1",
+			"instanceId": "1Entity"
+		},
+		"variableInstanceIdMap":{
+			"variable": "variable1",
+			"instanceId": "1Variable"
+		}
+	},
+	"entities": {
+		"Abc": {
+			"value": "entity1",
+			"id" : "1",
+			"instanceId": "1Entity"
+		}
+	},
+	"variables": {
+		"abc0d45f33f1-449d8316ed60bf8a": {
+			"value": "variable1",
+			"id" : "abc0d45f33f1-449d8316ed60bf8a",
+			"instanceId": "1Variable"
+		},
+		"abc0d45f33f1-449d8316ed60bf8a-6b57": {
+			"value": "ssn-value",
+			"id": "abc0d45f33f1-449d8316ed60bf8a-6b57",
+			"instanceId": "ssn-instanceId"
+		},
+		"4617cb7c25c2-4b7487a02e0cd2d3-9559": {
+			"value": "phone-upgrade-value",
+			"id": "4617cb7c25c2-4b7487a02e0cd2d3-9559",
+			"instanceId": "phone-upgrade-instanceId"
+		},
+		"a0ef0fd05ad9-453eb1601f28ba15-b128": {
+			"value": "wireless-number-value",
+			"id": "a0ef0fd05ad9-453eb1601f28ba15-b128",
+			"instanceId": "wireless-number-instanceId"
+		}
+	},
+	"intentSummaries": {
+		"1": {
+			"intentId": "intent1",
+			"instanceId": "instanceid",
+			"template": "<h1 color='red' style='bold'>Address Details</h1><p color='black'>customer name : <span entity-id='1' class='uniphore-entity-name'>customer name</span></p><p color='black' >mobile : <span variable-id='2' class='uniphore-variable-name'>mobile</span></p>",
+			"plainText": "customer wireless number",
+			"disposition": "unresolved",
+			"source": "",
+			"timestamp": {
+				"seconds": "1680202333",
+				"nanos": "686768203"
+			},
+			"entityInstanceIdMap":{
+				"entity": "entity1",
+				"instanceId": "1Entity"
+			},
+			"variableInstanceIdMap":{
+				"variable": "variable1",
+				"instanceId": "1Variable"
+			}
+		}
+	},
+	"participants": [
+		{
+			"participantId": "0",
+			"type": "agent",
+			"ctiAgentId":"cti-agent"
+		},
+		{
+			"participantId": "customer-001",
+			"type": "customer",
+			"ctiAgentId":"cti-customer"
+		}
+	]
+}

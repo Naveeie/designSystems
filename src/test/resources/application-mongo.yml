@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      #uri: ${MONGO_CLUSTER:mongodb://mongo:27017/summary}
+      uri: ${MONGO_CLUSTER:mongodb://localhost:27017/uniphore?authSource=admin}
+      database: ${MONGO_DB:summary}
+      auto-index-creation: true

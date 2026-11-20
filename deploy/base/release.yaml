@@ -1,0 +1,184 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: uassist-summary
+  annotations:
+    event.toolkit.fluxcd.io/git-repository: https://github.com/uniphore/u-assist-summary
+spec:
+  releaseName: uassist-summary
+  chart:
+    spec:
+      chart: uassist-summary
+      sourceRef:
+        kind: HelmRepository
+        name: uniphore-oci-charts
+        namespace: flux-system
+      version: "0.2.35-v44644f09"
+  interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  values:
+    environment: ""
+    externalSecrets:
+      summaryElasticCacheCredentials:
+        dataFrom: uniphore/${CLUSTER_REGION}/platform/elasticache-${CLUSTER_ENV_TYPE}-${CLUSTER_REGION}/elasticluster
+    image:
+      id: registry.uniphore.com/uniphore/uassist-summary:v-ffde3c1cc0
+    app:
+      ingress:
+        domainName: ${INGRESS_DOMAIN_NAME}
+      workload:
+        - resourceType: deployment
+          extraEnvArgs: false
+          name: uassist-summary
+          replicas:
+            dynamic:
+              min: 1
+              max: 1
+              targets:
+                cpuPercentage: 75
+                memoryPercentage: 75
+          extraVolumes:
+            - name: logs-volume
+              emptyDir: {}
+          containers:
+            - ports:
+                - name: http
+                  containerPort: 3380
+                  protocol: TCP
+              name: uassist-summary
+              volumeMounts:
+                - mountPath: "/var/log/uniphore/uassist-summary/"
+                  name: logs-volume
+              resources:
+                limits:
+                  memory: "4Gi"
+                  cpu: "1"
+                requests:
+                  memory: "4Gi"
+                  cpu: "1"
+              envFromSecrets:
+                elastic-credentials-summary:
+                  - name: REDIS_CLUSTER
+                    key: cluster
+                  - name: REDIS_SECRET
+                    key: secret
+                kafka-auth-config:
+                  - name: KAFKA_SERVERS
+                    key: kafka-brokers
+                launchdarkly-uniphore:
+                  - name: LD_SDK_KEY
+                    key: sdkKey
+                  - name: LD_LDC_CONTEXT
+                    key: clientSideID
+              env:
+                APP_LOGGING_LEVEL: WARN
+                CONSUMER_GROUP: summary
+                CONVERSATION_EVENT_QUEUE_IDLE_TIMEOUT_SECONDS: 1800
+                CONVERSATION_EVENT_QUEUE_SCHEDULER_CLEANUP_FREQUENCY_MILLIS: 5000
+                CONVERSATION_EVENT_QUEUE_WAIT_TIME_MILLIS: 5000
+                CONVERSATION_EVENTS_TOPIC: conversation-events
+                DEFAULT_THREAD_CORE_POOL_SIZE: 20
+                DEFAULT_THREAD_KEEP_ALIVE_TIME: 60
+                DEFAULT_THREAD_MAX_POOL_SIZE: 30
+                DEFAULT_THREAD_QUEUE_CAPACITY: 1000
+                GRPC_IDLE_TIME_OUT_MINUTES: 3
+                GRPC_KEEP_ALIVE_TIME_SECONDS: 30
+                GRPC_MAX_RETRIES: 5
+                FILES_REPO_MOUNT_PATH: ./
+                HAS_OAUTH2: false
+                IDP: auth0
+                JAVA_OPTS: -Xms128m -Xmx1024m
+                KAFKA_CONSUMER_CONCURRENCY: 1
+                KAFKA_KEY_STORE_TYPE: ""
+                KAFKA_MAX_MESSAGE_SIZE: 2097152
+                KAFKA_MIN_PARTITION_COUNT: ""
+                KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+                KAFKA_SSL_KEY_PASSWORD: ""
+                KAFKA_SSL_KEYSTORE_LOCATION: ""
+                KAFKA_SSL_KEYSTORE_PASSWORD: ""
+                KAFKA_SSL_TRUSTSTORE_LOCATION: ""
+                KAFKA_SSL_TRUSTSTORE_PASSWORD: ""
+                KAFKA_TRUST_STORE_TYPE: ""
+                KEYCLOAK_PRINCIPLE_ATTRIBUTE: sub
+                LAUNCH_DARKLY_ENABLED: true
+                LD_ID: us
+                LD_LIBRARY_PATH: /lib64
+                LLM_INTERFACE_HOST: llm-inference.ai
+                LLM_INTERFACE_PORT: 50051
+                LOCAL_CACHE_TTL_CONFIG_MILLISECONDS: 1800
+                LOCAL_CACHE_TTL_RUNTIME_MILLISECONDS: 300
+                LOGS_PATH: /var/log/uniphore/uassist-summary/
+                MAX_GRPC_INBOUND_MESSAGE_SIZE: 101000000
+                MAX_GRPC_OUTBOUND_MESSAGE_SIZE: 101000000
+                MONGO_CERT_FILE: ""
+                MONGO_CLUSTER: mongodb://root:<password>@mongo-cluster.mongo-cluster:27017/summary
+                MONGO_DB: summary
+                MONGO_TLS_ENABLED: false
+                OCMS_ENDPOINT: http://ocms.uassist:3340
+                OTEL_EXPORTER_OTLP_ENDPOINT: http://$(DD_AGENT_HOST):4318
+                PASSWORD_ENCRYPTION_ENABLED: false
+                PASSWORD_ENCRYPTION_KEY: ""
+                REDIS_CACHE_TIME_TO_LIVE: 3600000
+                REDIS_CLUSTER_MAX_REDIRECTS: 3
+                REDIS_CLUSTER_READ_FROM: MASTER
+                REDIS_LETTUCE_CLUSTE_REFRESH_ADAPTIVE: false
+                REDIS_LETTUCE_CLUSTE_REFRESH_DYNAMIC_REFRESH_SOURCES: false
+                REDIS_LETTUCE_CLUSTE_REFRESH_PERIOD: 5
+                REDIS_LETTUCE_POOL_MAX_ACTIVE: 200
+                REDIS_LETTUCE_POOL_MAX_IDLE: 10
+                REDIS_LETTUCE_POOL_MAX_WAIT: 2000
+                REDIS_LETTUCE_POOL_MIN_IDLE: 5
+                REDIS_LETTUCE_SHUTDOWN_TIMEOUT: 0
+                REDIS_SSL: false
+                REDIS_STREAM_KEY: uassist-summary-config-change
+                REDIS_TIMEOUT: 20000
+                REDIS_CLIENT_RETRY_ENABLED: false
+                REDIS_CLIENT_RETRY_LOWER_TIME_MILLISECONDS: 100
+                REDIS_CLIENT_RETRY_MAX_TIME_SECONDS: 5
+                APP_GRACEFUL_SHUTDOWN_WAIT_TIME_SECONDS: 30
+                ROOT_LOGGING_LEVEL: WARN
+                SUMMARY_REVIEWED_TOPIC: summary-reviewed
+                SUMMARY_UPDATE_TOPIC: summary-update
+                TELEMETRY_BUCKET_SUMMARY_MILLISECONDS: 5000,10000,20000,60000
+                TELEMETRY_BUCKET_API_MONITOR_MILLISECONDS: 5000,10000,20000,60000
+                VERSION: ""
+              probes:
+                readiness:
+                  httpGet:
+                    path: /health/readiness?environment=dev
+                    port: http
+                    httpHeaders:
+                      - name: X-Tenant-Id
+                        value: uassist-summary
+                      - name: X-Source
+                        value: service
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  failureThreshold: 3
+                liveness:
+                  httpGet:
+                    path: /health/liveness?environment=dev
+                    port: http
+                    httpHeaders:
+                      - name: X-Tenant-Id
+                        value: uassist-summary
+                      - name: X-Source
+                        value: service
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  failureThreshold: 10
+                startup:
+                  httpGet:
+                    path: /health/startup?environment=dev
+                    port: http
+                    httpHeaders:
+                      - name: X-Tenant-Id
+                        value: uassist-summary
+                      - name: X-Source
+                        value: service
+                  initialDelaySeconds: 60
+                  failureThreshold: 10
+                  periodSeconds: 5

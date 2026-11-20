@@ -1,0 +1,10 @@
+FROM registry.uniphore.com/chainguard/jre:openjdk-17
+#FROM maven:3.8.6-openjdk-11-slim
+LABEL MAINTAINER=uniphore.com
+# Verify installation
+RUN java -version
+#RUN mvn -version
+RUN ls -alR ~
+WORKDIR /app
+COPY . /app
+

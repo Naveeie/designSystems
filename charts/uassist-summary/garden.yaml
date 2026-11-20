@@ -1,0 +1,36 @@
+kind: Module
+type: helm
+name: uassist-summary
+
+serviceResource:
+  kind: Deployment
+  name: uassist-summary
+
+build:
+  dependencies:
+    - name: "uassist-summary-image"
+
+dependencies:
+   - platform-secrets
+   - redis
+   - kafka
+   - kafka-provisioning
+   - mongodb
+values:
+  image:
+    id: ${modules.uassist-summary-image.outputs.deployment-image-id}
+  app:
+    ingress:
+          hosts:
+            - name: uassist-summary
+              hostName: "api-${providers[var.kubernetesProvider].config.namespace.name}"
+              names:
+                base:
+                  routes:
+                    - path: /summary
+                      type: Prefix
+                      port: 3380
+                  additionalAnnotations:
+                    - konghq.com/strip-path: "true"
+          domainName: "${providers[var.kubernetesProvider].config.defaultHostname}"
+          certName: wildcard-cert-cloud-regional

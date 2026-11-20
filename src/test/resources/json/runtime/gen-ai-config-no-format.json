@@ -1,0 +1,23 @@
+{
+  "experienceId": "9e9d1fcc-f99d-400c-bfb8-95d79a6ba9e5",
+  "config": {
+    "isOnDemandSummaryEnabled": false,
+    "isAcwSummaryEnabled": true,
+    "isFormatEnabled": false,
+    "confidenceLevel": "don't show",
+    "sectionMap": {
+      "summary": [
+        {
+          "entityId": "11111",
+          "variableId": "22222",
+          "label": "label1",
+          "placement": "end of the section",
+          "isShowLabel": true
+        }
+      ]
+    }
+  },
+  "tenantId": "2889d922-9066-418b-9ebb-ea8c95ce295d",
+  "environment": "dev",
+  "userId": "auth0|63e20ea20f19db80e8de910c"
+}

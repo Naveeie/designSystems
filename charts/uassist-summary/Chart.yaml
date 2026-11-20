@@ -1,0 +1,10 @@
+apiVersion: v1
+appVersion: 0.1.0
+dependencies:
+- name: uniphore-base-chart
+  repository: oci://registry.uniphore.com/uniphore-charts
+  version: 1.0.20-v46ed179e
+description: Chart for uassist-summary service
+name: uassist-summary
+type: application
+version: 0.2.35-v44644f09

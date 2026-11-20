@@ -1,0 +1,20 @@
+{
+  "businessProcessId": "123",
+  "agentNotes": "This is agent's notes",
+  "headerSummary": "Test rules",
+  "intentId": "Intent1",
+  "instanceId" : "InstanceId1",
+  "intentSummary": "Debit date:@00000Date Credit date:@00000Dateupdated",
+  "disposition": "Disposition1",
+  "source": "agent",
+  "agentId": "100",
+  "genAiSummaryDoc" : {
+    "id": "12",
+    "text": "Ai Summary"
+  },
+  "entityEditPayloads": {
+    "isEntity": true,
+    "editedComponentId": "10078",
+    "editedValue": "EntityUpdated"
+  }
+}

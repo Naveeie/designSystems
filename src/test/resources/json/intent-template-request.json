@@ -1,0 +1,7 @@
+{
+	"intentId": "1",
+	"template": "<h1 color='red' style='bold'>Address Details</h1><p color='black'>customer name : <span entity-id='1' class='uniphore-entity-name'>customer name</span></p><p color='black' >mobile : <span variable-id='2' class='uniphore-variable-name'>mobile</span></p>",
+	"businessProcessId": "EnsembleBP01",
+	"experienceId": "2"
+	
+}

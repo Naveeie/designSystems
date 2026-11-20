@@ -1,0 +1,10 @@
+apiVersion: datadoghq.com/v1alpha1
+kind: DatadogMetric
+metadata:
+  name: dd-metric-kafka-lag-based-uassist-summary
+spec:
+  {{- if .Values.kafkaProvider.useConfluent }}
+    query: "{{ .Values.customHPA.datadog.baseMetric }} {cluster_name: {{ .Values.customHPA.datadog.clusterName }}, topic: {{ .Values.customHPA.datadog.topic }}, consumer_group_id: {{ .Values.customHPA.datadog.consumerGroup }} } by { {{ .Values.customHPA.datadog.groupBy }} }"
+  {{- else }}
+  query: "{{ .Values.customHPA.datadog.baseMetric }} {cluster_name: {{ .Values.customHPA.datadog.clusterName }}, topic: {{ .Values.customHPA.datadog.topic }}, consumer_group: {{ .Values.customHPA.datadog.consumerGroup }} } by { {{ .Values.customHPA.datadog.groupBy }} }"
+  {{- end }}

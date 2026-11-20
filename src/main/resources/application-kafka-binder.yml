@@ -1,0 +1,54 @@
+spring:
+  config:
+    activate:
+      on-profile: kafka
+  cloud:
+    function:
+      definition: conversationEvents;deploymentRequest;agentUpdate;tenantOperation
+    stream:
+      kafka:
+        binder:
+          brokers: ${KAFKA_SERVERS:localhost:9092}
+          replicationFactor: 1
+          auto-create-topics: true
+          consumer-properties:
+            max.poll.records: ${KAFKA_MAX_POLL_RECORDS:100}
+            max.poll.interval.ms: ${KAFKA_MAX_POLL_INTERVAL_MS:300000}
+            session.timeout.ms: ${KAFKA_SESSION_TIMEOUT_MS:30000}
+            heartbeat.interval.ms: ${KAFKA_HEARTBEAT_INTERVAL_MS:10000}
+            partition.assignment.strategy: org.apache.kafka.clients.consumer.CooperativeStickyAssignor
+      bindings:
+        summaryUpdate-out-0:
+          destination: ${SUMMARY_UPDATE_TOPIC:summary-update}
+        metricReportEvents-out-0:
+          destination: ${METRICS_REPORTER_TOPIC:metrics-reporter}
+        summaryReviewed-out-0:
+          destination: ${SUMMARY_REVIEWED_TOPIC:summary-reviewed}
+        conversationReviewed-out-0:
+          destination: ${CONVERSATION_REVIEWED_TOPIC:conversation-reviewed}
+        conversationEvents-in-0:
+          destination: ${CONVERSATION_EVENTS_TOPIC:conversation-events}
+          group: ${CONSUMER_GROUP:summary-group}
+          consumer:
+            concurrency: ${KAFKA_CONSUMER_CONCURRENCY:1}
+        conversationEvents-out-0:
+          destination: ${CONVERSATION_EVENTS_TOPIC:conversation-events}
+        deploymentRequest-in-0:
+          destination: ${TOPIC_DEPLOYMENT_EVENTS:environments.deployment-events}
+          group: ${CONSUMER_GROUP:summary-deployment}
+        deploymentResponse-out-0:
+          destination: ${TOPIC_DEPLOYMENT_STATUS:environments.deployment-status}
+        agentUpdate-out-0:
+          destination: ${TOPIC_SUMMARY_AGENT_UPDATE:summary-agent-updates}
+        agentUpdate-in-0:
+          destination: ${TOPIC_SUMMARY_AGENT_UPDATE:summary-agent-updates}
+          group: ${CONSUMER_GROUP:uassist-summary}
+        tenantOperation-in-0:
+          destination: ${TOPIC_TENANT_OPERATION:tenant-operation}
+          group: ${CONSUMER_GROUP:uassist-summary}
+        exportResponse-out-0:
+          destination: ${TOPIC_EXPORT_RESPONSE:environments.export-response}
+        importResponse-out-0:
+          destination: ${TOPIC_IMPORT_RESPONSE:environments.import-response}
+        rollbackResponse-out-0:
+          destination: ${TOPIC_ROLLBACK_RESPONSE:environments.rollback-response}

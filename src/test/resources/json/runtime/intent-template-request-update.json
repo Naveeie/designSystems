@@ -1,0 +1,8 @@
+{
+	"intentId": "1",
+	"template": "<p color='black'>customer name : <span entity-id='1' class='uniphore-entity-name'>John Doe</span></p>",
+	"businessProcessId": "test-bp",
+	"experienceId": "test-experience-id",
+	"tenantId": "test-tenant-id",
+	"environment": "dev"
+}

@@ -1,0 +1,7 @@
+{
+  "experienceId": "test-experience-id",
+  "config": "{\"summaryFormat\":{\"agent-steps\":\"number-list\",\"call-reason\":\"bullet-point\",\"outcome\":\"paragraph\"},\"isOnDemandSummaryEnabled\":\"false\",\"isAcwSummaryEnabled\":true,\"isFormatEnabled\":\"true\",\"sectionMap\":{\"agent-actions\":[{\"entityId\":\"11111\",\"variableId\":\"22222\",\"label\":\"label1\",\"placement\":\"end of the section\",\"isShowLabel\":true}],\"call-reasons\":[{\"entityId\":\"33333\",\"variableId\":\"44444\",\"label\":\"label2\",\"placement\":\"end of the section\",\"isShowLabel\":true}],\"call-outcome\":[{\"entityId\":\"55555\",\"variableId\":\"66666\",\"label\":\"label3\",\"placement\":\"end of the section\",\"isShowLabel\":true}]},\"callTypeTemplateMappings\":[{\"intentLabel\":\"intent-label\",\"templateId\":\"template-uuid\",\"version\":1}]}",
+  "tenantId": "test-tenant-id",
+  "environment": "dev",
+  "userId": "auth0|63e20ea20f19db80e8de910c"
+}

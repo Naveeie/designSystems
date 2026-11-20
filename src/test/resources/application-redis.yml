@@ -1,0 +1,35 @@
+spring:
+   data:
+      redis:
+         password: ${REDIS_SECRET:}
+         cluster:
+#            nodes: ${REDIS_CLUSTER:localhost:6379}
+            nodes: ${REDIS_CLUSTER:localhost:6379}
+            max-redirects: ${REDIS_CLUSTER_MAX_REDIRECTS:3}
+            read-from: ${REDIS_CLUSTER_READ_FROM:MASTER}
+         ssl:
+            enabled: ${REDIS_SSL:false}
+         lettuce:
+            pool:
+               min-idle: ${REDIS_LETTUCE_POOL_MIN_IDLE:5}
+               max-idle: ${REDIS_LETTUCE_POOL_MAX_IDLE:10}
+               max-active: ${REDIS_LETTUCE_POOL_MAX_ACTIVE:8}
+               max-wait: ${REDIS_LETTUCE_POOL_MAX_WAIT:2000}
+               time-between-eviction-runs: 50000ms
+            shutdown-timeout: ${REDIS_LETTUCE_SHUTDOWN_TIMEOUT:0}
+            cluster:
+               refresh:
+                  dynamic-refresh-sources: ${REDIS_LETTUCE_CLUSTE_REFRESH_DYNAMIC_REFRESH_SOURCES:false}
+                  period: ${REDIS_LETTUCE_CLUSTE_REFRESH_PERIOD:5}
+                  adaptive: ${REDIS_LETTUCE_CLUSTE_REFRESH_ADAPTIVE:false}
+            client:
+               keystore-location: ${REDIS_CLIENT_KEYSTORE_LOCATION:}
+               keystore-password: ${REDIS_CLIENT_KEYSTORE_PASSWORD:}
+               truststore-location: ${REDIS_CLIENT_TRUSTSTORE_LOCATION:}
+               truststore-password: ${REDIS_CLIENT_TRUSTSTORE_PASSWORD:}
+               retry:
+                  enabled: ${REDIS_CLIENT_RETRY_ENABLED:true}
+                  lower-time: ${REDIS_CLIENT_RETRY_LOWER_TIME_MILLISECONDS:100}
+                  max-time: ${REDIS_CLIENT_RETRY_MAX_TIME_SECONDS:10}
+         timeout: ${REDIS_TIMEOUT:20000}
+      data.redis.repositories.enabled: false

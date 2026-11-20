@@ -1,0 +1,275 @@
+global:
+  platformBase:
+    useLibrariesOnly: true
+
+externalSecrets:
+  summaryElasticCacheCredentials:
+    enabled: true
+    name: elastic-credentials-summary
+    dataFrom: uniphore/us/platform/elasticache-staging-us/elasticluster
+  summaryMongoAtlasCredentials:
+    enabled: true
+    name: mongo-atlas-credentials-summary
+    dataFrom: uniphore/us/mongodb/uassist-user-credentials
+localSecrets:
+  elastic-credentials-summary:
+    cluster: redis-master:6379
+    secret: ""
+  mongo-atlas-credentials-summary:
+    username: uniphore
+    password: ""
+    hostname: mongodb:27017
+    prefix: mongodb
+
+environment: dev
+
+image:
+  id: registry.uniphore.com/uniphore-manual/uassist-summary:v-5b58b8ec59
+
+app:
+  name: uassist-summary
+  type: uassist
+  uniphoreTeam: uassist
+  usedBy: "uassist,xconsole"
+  workload:
+    - resourceType: deployment
+      extraEnvArgs: false
+      name: uassist-summary
+      replicas:
+        dynamic:
+          min: 1
+          max: 1
+          targets:
+            cpuPercentage: 75
+            memoryPercentage: 75
+      lifecycle:
+        sigtermGracePeriodSeconds: 30
+        sigkillGracePeriodSeconds: 180
+      extraVolumes:
+        - name: logs-volume
+          emptyDir: {}
+      containers:
+        - ports:
+            - name: http
+              containerPort: 3380
+              protocol: TCP
+          name: uassist-summary
+          volumeMounts:
+            - mountPath: "/var/log/uniphore/uassist-summary/"
+              name: logs-volume
+          resources:
+            limits:
+              memory: "4Gi"
+              cpu: "1"
+            requests:
+              memory: "4Gi"
+              cpu: "1"
+          envFromSecrets:
+            mongo-atlas-credentials-summary:
+              - name: MONGO_HOSTNAME
+                key: hostname
+              - name: MONGO_USERNAME
+                key: username
+              - name: MONGO_PASSWORD
+                key: password
+              - name: MONGO_PREFIX
+                key: prefix
+            elastic-credentials-summary:
+              - name: REDIS_CLUSTER
+                key: cluster
+              - name: REDIS_SECRET
+                key: secret
+            kafka-auth-config:
+              - name: KAFKA_SERVERS
+                key: kafka-brokers
+            launchdarkly-uniphore:
+              - name: LD_SDK_KEY
+                key: sdkKey
+              - name: LD_LDC_CONTEXT
+                key: clientSideID
+          env:
+            APP_LOGGING_LEVEL: WARN
+            CONSUMER_GROUP: summary
+            CONVERSATION_EVENT_QUEUE_IDLE_TIMEOUT_SECONDS: 120
+            CONVERSATION_EVENT_QUEUE_SCHEDULER_CLEANUP_FREQUENCY_MILLIS: 60000
+            CONVERSATION_EVENT_QUEUE_WAIT_TIME_MILLIS: 5000
+            CONVERSATION_EVENTS_TOPIC: conversation-events
+            DEFAULT_THREAD_CORE_POOL_SIZE: 20
+            DEFAULT_THREAD_KEEP_ALIVE_TIME: 60
+            DEFAULT_THREAD_MAX_POOL_SIZE: 30
+            DEFAULT_THREAD_QUEUE_CAPACITY: 1000
+            GENAI_SUMMARY_TARGET_LANGUAGES: en-us,fr-fr,es-us,it-it
+            GRPC_IDLE_TIME_OUT_MINUTES: 3
+            GRPC_KEEP_ALIVE_TIME_SECONDS: 30
+            GRPC_MAX_RETRIES: 5
+            FILES_REPO_MOUNT_PATH: ./
+            HAS_OAUTH2: false
+            IDP: auth0
+            JAVA_OPTS: -Xms512m -Xmx2g
+            KAFKA_CONSUMER_CONCURRENCY: 1
+            KAFKA_HEARTBEAT_INTERVAL_MS: 10000
+            KAFKA_KEY_STORE_TYPE: ""
+            KAFKA_MAX_MESSAGE_SIZE: 2097152
+            KAFKA_MAX_POLL_INTERVAL_MS: 300000
+            KAFKA_MAX_POLL_RECORDS: 100
+            KAFKA_MIN_PARTITION_COUNT: ""
+            KAFKA_SECURITY_PROTOCOL: PLAINTEXT
+            KAFKA_SESSION_TIMEOUT_MS: 30000
+            KAFKA_SSL_KEY_PASSWORD: ""
+            KAFKA_SSL_KEYSTORE_LOCATION: ""
+            KAFKA_SSL_KEYSTORE_PASSWORD: ""
+            KAFKA_SSL_TRUSTSTORE_LOCATION: ""
+            KAFKA_SSL_TRUSTSTORE_PASSWORD: ""
+            KAFKA_TRUST_STORE_TYPE: ""
+            KEYCLOAK_PRINCIPLE_ATTRIBUTE: sub
+            LAUNCH_DARKLY_ENABLED: true
+            LD_ID: us
+            LD_LIBRARY_PATH: /lib64
+            LLM_INTERFACE_HOST: llm-inference.ai
+            LLM_INTERFACE_PORT: 50051
+            LOCAL_CACHE_TTL_CONFIG_MILLISECONDS: 1800
+            LOCAL_CACHE_TTL_RUNTIME_MILLISECONDS: 300
+            LOGS_PATH: /var/log/uniphore/uassist-summary/
+            MAX_GRPC_INBOUND_MESSAGE_SIZE: 101000000
+            MAX_GRPC_OUTBOUND_MESSAGE_SIZE: 101000000
+            MONGO_CERT_FILE: ""
+            MONGO_CLUSTER: $(MONGO_PREFIX)://$(MONGO_USERNAME):$(MONGO_PASSWORD)@$(MONGO_HOSTNAME)/summary?authSource=admin
+            MONGO_DB: summary
+            MONGO_TLS_ENABLED: false
+            OCMS_ENDPOINT: http://ocms.uassist:3340
+            OTEL_EXPORTER_OTLP_ENDPOINT: http://$(DD_AGENT_HOST):4318
+            PASSWORD_ENCRYPTION_ENABLED: false
+            PASSWORD_ENCRYPTION_KEY: ""
+            REDIS_CACHE_TIME_TO_LIVE: 3600000
+            REDIS_CLUSTER_MAX_REDIRECTS: 3
+            REDIS_CLUSTER_READ_FROM: MASTER
+            REDIS_LETTUCE_CLUSTE_REFRESH_ADAPTIVE: false
+            REDIS_LETTUCE_CLUSTE_REFRESH_DYNAMIC_REFRESH_SOURCES: false
+            REDIS_LETTUCE_CLUSTE_REFRESH_PERIOD: 5
+            REDIS_LETTUCE_POOL_MAX_ACTIVE: 200
+            REDIS_LETTUCE_POOL_MAX_IDLE: 10
+            REDIS_LETTUCE_POOL_MAX_WAIT: 2000
+            REDIS_LETTUCE_POOL_MIN_IDLE: 5
+            REDIS_LETTUCE_SHUTDOWN_TIMEOUT: 0
+            REDIS_SSL: false
+            REDIS_STREAM_KEY: uassist-summary-config-change
+            REDIS_TIMEOUT: 20000
+            REDIS_CLIENT_RETRY_ENABLED: false
+            REDIS_CLIENT_RETRY_LOWER_TIME_MILLISECONDS: 100
+            REDIS_CLIENT_RETRY_MAX_TIME_SECONDS: 5
+            ROOT_LOGGING_LEVEL: WARN
+            SUMMARY_REVIEWED_TOPIC: summary-reviewed
+            SUMMARY_UPDATE_TOPIC: summary-update
+            TELEMETRY_BUCKET_SUMMARY_MILLISECONDS: 5000,10000,20000,60000
+            TELEMETRY_BUCKET_API_MONITOR_MILLISECONDS: 5000,10000,20000,60000
+            APP_GRACEFUL_SHUTDOWN_WAIT_TIME_SECONDS: 30
+            FEATURE_FLAG_OCMS_DISABLED: true
+            VERSION: ""
+          probes:
+            readiness:
+              httpGet:
+                path: /health/readiness?environment=dev
+                port: http
+                httpHeaders:
+                  - name: X-Tenant-Id
+                    value: uassist-summary
+                  - name: X-Source
+                    value: service
+              initialDelaySeconds: 10
+              periodSeconds: 5
+              failureThreshold: 3
+            liveness:
+              httpGet:
+                path: /health/liveness?environment=dev
+                port: http
+                httpHeaders:
+                  - name: X-Tenant-Id
+                    value: uassist-summary
+                  - name: X-Source
+                    value: service
+              initialDelaySeconds: 60
+              periodSeconds: 30
+              failureThreshold: 10
+            startup:
+              httpGet:
+                path: /health/startup?environment=dev
+                port: http
+                httpHeaders:
+                  - name: X-Tenant-Id
+                    value: uassist-summary
+                  - name: X-Source
+                    value: service
+              initialDelaySeconds: 60
+              failureThreshold: 10
+              periodSeconds: 5
+
+  service:
+    - name: uassist-summary
+      enabled: true
+      spec:
+        ports:
+          - port: 3380
+            protocol: TCP
+            targetPort: 3380
+            name: http
+  ingress:
+    plugins:
+      cors:
+        enabled: true
+      claims:
+        enabled: true
+      jwt:
+        enabled: true
+    hosts:
+      - name: uassist-summary
+        hostName: "api"
+        names:
+          base:
+            routes:
+              - path: /summary
+                type: Prefix
+                port: 3380
+            staticPlugins: false
+            additionalAnnotations:
+              - konghq.com/strip-path: "true"
+    domainName: "us.cloud.uniphoredev.com"
+    certName: wildcard-cert-cloud-regional
+    enabled: true
+    class: "kong"
+    kong:
+      jwt:
+        consumer:
+          enabled: false
+        enabled: true
+        rsaPublicKey: ""
+        key: ""
+      cors:
+        enabled: true
+        origins:
+          - "*"
+      claims:
+        enabled: true
+      oidc:
+        enabled: false
+      upstreamTimeout:
+        enabled: false
+        name: ""
+
+tenant:
+  id: ""
+
+kafkaProvider:
+  useConfluent: false
+
+#Horizontal Pod Autoscaling based on Custom Datadog metric [Kafka lag]
+customHPA:
+  datadog:
+    baseMetric: "avg:confluent_cloud.kafka.consumer_lag_offsets"
+    clusterName: "msk-dev"
+    topic: "conversation-events"
+    consumerGroup: "summary"
+    groupBy: "consumer_group_id"
+  hpa:
+    minReplica: 1
+    maxReplica: 3
+    scaleUpTargetValue: 500

@@ -1,0 +1,7 @@
+{
+  "experienceId": "test-experience-id",
+  "config": "",
+  "tenantId": "test-tenant-id",
+  "environment": "dev",
+  "userId": "auth0|63e20ea20f19db80e8de910c"
+}

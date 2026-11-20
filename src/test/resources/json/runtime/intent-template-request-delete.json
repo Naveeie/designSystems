@@ -1,0 +1,8 @@
+{
+	"intentId": "1",
+	"template": "",
+	"businessProcessId": "test-bp",
+	"experienceId": "test-experience-id",
+	"tenantId": "test-tenant-id",
+	"environment": "dev"
+}

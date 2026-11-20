@@ -1,0 +1,11 @@
+{
+  "dispositionId": "Disposition1",
+  "businessProcessId": "EnsembleBP01",
+  "name": "Amazon disposition",
+  "description": "disposition desc",
+  "values": {
+    "0": "resolved"
+  },
+  "env":"dev",
+  "tenantId": "3e37631c-78ac-4137-8415-72dcd90b19fd"
+}

@@ -1,0 +1,14 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: uassist-summary
+spec:
+  releaseName: uassist-summary
+  targetNamespace: platform
+  values:
+    environment: prod
+    image:
+      id: registry.uniphore.com/uniphore/uassist-summary:v-5534c749c8
+  chart:
+    spec:
+      version: "0.2.35-v5e4eff88"

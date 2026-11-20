@@ -1,0 +1,5 @@
+{
+	"conversationId": "cfr3sh3hjl1dk9u130hl",
+	"businessProcessId": "EnsembleBP01",
+	"headerSummary": "<h1 color='red' style='bold'>Address Details<\\h1><p color='black'>customer name : <span entity-id='1' class='uniphore-entity-name'>customer name</span><\\p><p color='black' >mobile : <span variable-id='2' class='uniphore-variable-name'>mobile</span><\\p>"
+	}

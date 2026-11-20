@@ -1,0 +1,7 @@
+{
+	"tenantId": "test-tenant-id",
+	"environment": "dev",
+	"template": "",
+	"businessProcessId": "test-bp",
+	"userId": "12345"
+}

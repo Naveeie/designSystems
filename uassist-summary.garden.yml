@@ -1,0 +1,65 @@
+kind: Module
+type: jib-container
+name: uassist-summary-image
+disabled: false
+image: uassist-summary
+include:
+  - ./pom.xml
+  - ./src
+
+build:
+  projectType: maven
+  dockerBuild: ${environment.name == "local"}
+  jdkVersion: 17
+extraFlags:
+  - "-DskipTests=true"
+  - package
+
+---
+kind: Module
+type: exec
+name: uassist-summary-tests
+exclude:
+  - ./charts
+local: true
+tests:
+  - name: unit
+    command:
+      - chmod
+      - "777"
+      - "./mvnw"
+      - "&&"
+      - sh
+      - "./mvnw"
+      - "clean"
+      - "jacoco:prepare-agent"
+      - "install"
+      - "jacoco:report"
+      - "-DfailIfNoTests=false"
+      - "test"
+    artifacts:
+      - source: test-reports
+        target: test-reports
+
+  - name: integration
+    command:
+      - chmod
+      - "777"
+      - "./mvnw"
+      - "&&"
+      - sh
+      - "./mvnw"
+      - "clean"
+      - "install"
+      - "test"
+      - "-P"
+      - "integration-test"
+    env:
+      REDIS_CLUSTER: localhost:6379
+      KAFKA_SERVERS: localhost:9092
+      MONGO_CLUSTER: mongodb://localhost:27017/summary
+    artifacts:
+      - source: test-reports
+        target: test-reports
+
+

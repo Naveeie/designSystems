@@ -1,0 +1,12 @@
+{
+	"tenantId": "3e37631c-78ac-4137-8415-72dcd90b19fd",
+	"environment": "dev",
+	"conversationId": "cfr3sh3hjl1dk9u130hl",
+	"businessProcessId": "7341466421122183431708590568104",
+	"agentId": "agent1",
+	"agent": "agent1",
+	"ctiAgentId":"ctiAgentId",
+	"customerId": "customer1",
+	"organizationId": "organization1",
+	"language": "en-us"
+}

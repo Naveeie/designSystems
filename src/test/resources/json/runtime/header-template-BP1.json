@@ -1,0 +1,11 @@
+
+  {
+    "headerTemplateId": "60152480728940153951708597959874",
+    "tenantId": "3e37631c-78ac-4137-8415-72dcd90b19fd",
+    "environment": "dev",
+    "businessProcessId": "7341466421122183431708590568104",
+    "template": "<p>Test rules&nbsp;<br><br>Test_String @<span entity-id=\"entity1\" class=\"uniphore-entity-name\" contenteditable=\"false\">Test_String</span></p><p color='black' >mobile : <span variable-id='variable1' class='uniphore-variable-name'>mobile</span></p>",
+    "plainText": "Test rules  Test_String @@Test_String Rule string@Rule Test_String Rule order@Order_Rule Rule Order 2@Order_Rule_2 Rule Order 3@Order_Rule_3 Rule Order 4@Order_Rule_4 Rule Order 5@Order_Rule_5 Rule 3 Copy@Order_Rule_3 copy PO Rule@Purchase Options Rule Customer Wireless Number@Customer Wireless Number Rule CWN @Rule_Customer Wireless number Help Entity@help you today Help Var@Help_Var Order Processed Entity@order has been processed Order Processed Var@order has been processed Date@Date"
+  }
+
+

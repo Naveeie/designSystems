@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: summary
+management:
+  metrics:
+    export:
+      statsd:
+        enabled: false
+        host: ${DD_AGENT_HOST:test.env}
+        flavor: etsy
+
+opentelemetry:
+  exporter:
+    metrics-endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://test.env:4318}/v1/metrics

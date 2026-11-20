@@ -1,0 +1,119 @@
+server:
+  port: 3380
+  shutdown: graceful
+management:
+  endpoint:
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    export:
+      statsd:
+        enabled: true
+        host: ${DD_AGENT_HOST}
+        flavor: etsy
+idp: ${IDP:auth0}
+telemetry:
+  bucket:
+    summary: ${TELEMETRY_BUCKET_SUMMARY_MILLISECONDS:5000,10000,20000,60000}
+    api-monitor: ${TELEMETRY_BUCKET_API_MONITOR_MILLISECONDS:5000,10000,20000,60000}
+opentelemetry:
+  exporter:
+    metrics-endpoint: ${OTEL_EXPORTER_OTLP_ENDPOINT:http://${DD_AGENT_HOST}:4318}/v1/metrics
+local:
+  cache:
+    ttl:
+      runtime: ${LOCAL_CACHE_TTL_RUNTIME_MILLISECONDS:300}
+      config: ${LOCAL_CACHE_TTL_CONFIG_MILLISECONDS:1800}
+redis:
+  stream:
+    config-change-key: ${REDIS_CONFIG_CHANGE_STREAM_KEY:uassist-summary-config-changes}
+    agent-event-key: ${REDIS_AGENT_UPDATE_STREAM_KEY:uassist-summary-agent-update}
+    pollTimeout: ${REDIS_STREAM_POLLTIMEOUT:500}
+thread:
+  corePoolSize: ${DEFAULT_THREAD_CORE_POOL_SIZE:100}
+  maxPoolSize: ${DEFAULT_THREAD_MAX_POOL_SIZE:200}
+  queueCapacity: ${DEFAULT_THREAD_QUEUE_CAPACITY:50}
+  keepAliveTime: ${DEFAULT_THREAD_KEEP_ALIVE_TIME:3000}
+ocms:
+  endpoint: ${OCMS_ENDPOINT:http://ocms.mtmeqa:3340}
+
+caesium:
+  endpoint: ${CAESIUM_ENDPOINT:http://caesium:8080}
+
+platform:
+  access-token: ${PLATFORM_ACCESS_TOKEN:}
+  cms.endpoint: ${CMS_ENDPOINT:http://cms.mtmeqa:3000}
+#   data-collector.endpoint: ${DATA_COLLECTOR_ENDPOINT:https://uassist-23-3-oauth.dev.uniphoredev.com/data-collector}
+app:
+  graceful-shutdown:
+    wait-time: ${APP_GRACEFUL_SHUTDOWN_WAIT_TIME_SECONDS:30}
+  redis:
+    summary-cache:
+      ttl: ${REDIS_CACHE_TIME_TO_LIVE:3600000}
+    intent-cache:
+      ttl: ${REDIS_CACHE_TIME_TO_LIVE:3600000}
+  encryption:
+    password:
+      enabled: ${PASSWORD_ENCRYPTION_ENABLED:false}
+#   upload-path: ${FILES_REPO_MOUNT_PATH:/data1/uassist}/${spring.application.name}/encryption
+  keycloak:
+    enabled: ${HAS_OAUTH2:true}
+    token.url: ${KEYCLOAK_AUTH_URL:http://3.136.143.72:8180/auth}/realms/${KEYCLOAK_REALM:uniphore-dev}/${KEYCLOAK_METHOD_NAME:/protocol/openid-connect}/token
+    introspection.url: ${KEYCLOAK_AUTH_URL:http://3.136.143.72:8180/auth}/realms/${KEYCLOAK_REALM:uniphore-dev}${KEYCLOAK_METHOD_NAME:/protocol/openid-connect}/token/introspect
+    client:
+      id: ${KEYCLOAK_RESOURCE_GATEWAY:keycloak_resource}
+      secret: ${KEYCLOAK_CLIENT_SECRET_GATEWAY:client-secret}
+summary:
+  csv:
+    upload-path: ${FILES_REPO_MOUNT_PATH:}/${spring.application.name}/csv
+openid:
+  userIdClaim: ${KEYCLOAK_PRINCIPLE_ATTRIBUTE:sub}
+cache:
+  refresh:
+    ttl: ${REDIS_REFRESH_CACHE_TIME_TO_LIVE:300000}
+spring:
+  application:
+    name: summary
+  lifecycle:
+    timeout-per-shutdown-phase: ${APP_GRACEFUL_SHUTDOWN_WAIT_TIME_SECONDS:30}
+  profiles:
+    active: redis,mongo,kafka
+  config:
+    import: classpath:application-kafka.yml,classpath:application-kafka-binder.yml
+launchdarkly:
+  enabled: ${LAUNCH_DARKLY_ENABLED:false}
+  sdk-key: ${LD_SDK_KEY:}
+  context: ${LD_LDC_CONTEXT:}
+  id: ${LD_ID:interact}
+  context.cache.ttl.minutes: 1440
+gen-ai:
+  interface:
+    server-host: ${LLM_INTERFACE_HOST:llm-inference.ai}
+    server-port: ${LLM_INTERFACE_PORT:50051}
+    max-inbound-message-size: ${MAX_GRPC_INBOUND_MESSAGE_SIZE:101000000}
+    max-outbound-message-size: ${MAX_GRPC_OUTBOUND_MESSAGE_SIZE:101000000}
+    idle-time-out: ${GRPC_IDLE_TIME_OUT_MINUTES:3}
+    keep-alive-time: ${GRPC_KEEP_ALIVE_TIME_SECONDS:30}
+    keep-alive-timeout: ${GRPC_KEEP_ALIVE_TIMEOUT_SECONDS:20}
+    call-deadline-seconds: ${GRPC_CALL_DEADLINE_SECONDS:30}
+    max-retires: ${GRPC_MAX_RETRIES:5}
+  language:
+    support: ${GENAI_SUMMARY_TARGET_LANGUAGES:en-us,fr-fr,es-us,it-it}
+
+conversations:
+  processor:
+    scheduler:
+      processor-idle-duration: ${CONVERSATION_EVENT_QUEUE_IDLE_TIMEOUT_SECONDS:120}
+      frequency: ${CONVERSATION_EVENT_QUEUE_SCHEDULER_CLEANUP_FREQUENCY_MILLIS:60000}
+    wait-time-millis: ${CONVERSATION_EVENT_QUEUE_WAIT_TIME_MILLIS:5000}
+usermanagement:
+  endpoint: ${USER_MGMT_ENDPOINT:http://api.us.cloud.uniphorestaging.com/users}
+
+
+feature-flag:
+  ocms:
+    disabled: ${FEATURE_FLAG_OCMS_DISABLED:false}

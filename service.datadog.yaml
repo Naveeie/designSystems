@@ -1,0 +1,26 @@
+apiVersion: v3
+kind: service
+metadata:
+  name: uassist-summary
+  displayName: uassist-summary
+  description: uassist-summary
+  owner: uassist
+  links:
+    - name: Source Code
+      type: repo
+      provider: github
+      url: https://github.com/uniphore/u-assist-summary
+    - name: Docs
+      type: doc
+      url: https://github.com/uniphore/u-assist-summary/blob/master/README.md
+  contacts:
+    - type: slack
+      name: "#platform-uassist-support"
+      contact: https://uniphore.slack.com/archives/C06ADAM8V39
+spec:
+  lifecycle: production
+  tier: "1"
+  languages: [java]
+integrations:
+  pagerduty:
+    serviceURL: https://uniphore.pagerduty.com/service-directory/P2HLB1C

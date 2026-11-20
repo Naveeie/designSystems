@@ -1,0 +1,10 @@
+
+  {
+    "headerTemplateId": "60152480728940153951708597959874",
+    "tenantId": "3e37631c-78ac-4137-8415-72dcd90b19fd",
+    "environment": "dev",
+    "businessProcessId": "3211466421122183431708590568104",
+    "template": "<p>Test rules&nbsp;<br><br>Test_String1 @<span entity-id=\"entity1\" class=\"uniphore-entity-name\" contenteditable=\"false\">Test_String1</span></p><p>Test rules&nbsp;<br><br>Test_String2 @<span entity-id=\"entity2\" class=\"uniphore-entity-name\" contenteditable=\"false\">Test_String2</span></p><p color='black' >mobile : <span variable-id='variable1' class='uniphore-variable-name'>mobile</span></p><p color='black' >Address : <span variable-id='variable2' class='uniphore-variable-name'>Address</span></p>"
+  }
+
+

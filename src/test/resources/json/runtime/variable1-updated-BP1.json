@@ -1,0 +1,13 @@
+{
+  "variableId": "variable1",
+  "name": "variable1",
+  "value": "variable value 11 2",
+  "aiValue": "test value",
+  "sourceId": "variable1",
+  "instanceId": "variable-value-1-1",
+  "tenantId": "3e37631c-78ac-4137-8415-72dcd90b19fd",
+  "conversationId": "cfr3sh3hjl1dk9u130hl",
+  "environment":"dev",
+  "experienceId": "52b81e03-69a1-4d43-8759-726b6ac55f19",
+  "businessProcessId": "7341466421122183431708590568104"
+}
