@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flashsale
+    username: flashsale
+    password: flashsale
+    hikari:
+      # Keep this fixed across every stage, or results aren't comparable.
+      maximum-pool-size: 20
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+booking:
+  # naive | pessimistic | atomic
+  strategy: naive
+
+app:
+  seed:
+    stock: 100
